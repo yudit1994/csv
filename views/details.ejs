@@ -1,0 +1,142 @@
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="/css/style.css" >
+
+<!-- a=0 if we are coming from home page-->
+<% if(a==0){ %>
+
+  <!--form for submiting the filter values-->
+  <form method="post" action="/row">
+    <input type="text" name="row" id="row" placeholder="Search the 3rd coloumn element (case sensitive)"   >
+    <input type="hidden" name="posting" value="<%= filename %>">
+    <input type="submit" value="Search">
+  </form>
+  <a href="#paginator" id="link">Paginator</a>
+  <a href="/" id="home">Go To Home</a>
+
+  <!--table creating-->
+<table>
+  <!--creating the header-->
+<tr>
+  <th>S.No</th>
+ <th>
+    <% for(let j in filedetails[0]){ %>
+        <% for(let k=0; k<j.length; k++){  %>
+            <% if (j.charAt(k) == ','){ %>
+              </th>
+              <th>
+            <% } %>
+            <% if (j.charAt(k) != ','){ %>
+              <%= j.charAt(k) %>
+            <% } %>
+          <% } %>
+    <% } %> 
+ </th>  
+</tr>
+
+<!--creating the body of the table , start is start of the page
+    in pagination and end is the next 100th value-->
+<% for(var i=start; i<end; i++){ %>
+<tr>
+  <!--serial number-->
+<% if(i<filedetails.length){ %>
+<td><%= i+1 %></td>
+<% } %>
+
+
+<% for(let j in filedetails[i]){ %> 
+
+<td>
+    <% for(let k=0; k<filedetails[i][j].length; k++){  %>
+      <!--seperator of the coloumn is ,-->
+      <% if (filedetails[i][j].charAt(k) == ','){ %>
+        </td>
+        <td>
+      <% } %>
+      <% if (filedetails[i][j].charAt(k) != ','){ %>
+        
+        <%= filedetails[i][j].charAt(k) %>
+      <% } %>
+    <% } %>
+</td>   
+
+<% } %>
+</tr> 
+<% } %>
+</table>
+<!--paginator calculation based of division by 100-->
+<div id="paginator"> 
+  <% for(let z=0 ; z<=(filedetails.length/100); z++){ %>
+    <a href="/open?name=<%= filename %>&page=<%= z+1 %>" class="paginator-page"><%= z+1 %></a>
+  <% } %>
+  </div>
+<% } %>
+
+
+<!--a=1 when we are coming from filter -->
+<% if(a==1){ %>
+  <table>
+    <tr>
+      <th>
+        <!--setting the header by taking the key and , as seperator
+            for the coloumn -->
+         <% for(let j in filedetails[0]){ %>
+             <% for(let k=0; k<j.length; k++){  %>
+                 <% if (j.charAt(k) == ','){ %>
+                   </th>
+                   <th>
+                 <% } %>
+                 <% if (j.charAt(k) != ','){ %>
+                   <%= j.charAt(k) %>
+                 <% } %>
+             <% } %>
+         <% } %> 
+      </th>  
+     </tr>
+  <!--start is the start of the pagination value and end is the end
+      of the paggination value-->
+   <% for(let b = start; b < end; b++){ %>
+   <% var key = '' %>
+   <% var count = 0 %>
+    <% for(let d in filedetails[b]){ %>
+       
+       <% for(let c=0; c< filedetails[b][d].length; c++){  %>
+         
+         <% if(filedetails[b][d].charAt(c) == ','){ %>
+         <% count++ %>
+        
+         <% } %>
+        
+        <% if(count == 1 && filedetails[b][d].charAt(c) != ',' && filedetails[b][d].charAt(c) != ' '){ %>
+          <!--creates the key which is the 3rd row element-->
+          <% key = key + filedetails[b][d].charAt(c) %>
+          
+        <% } %> 
+
+      <% } %> 
+      <!--matches the 3rd row elements with the value which we searched-->
+      <% if(key == search){ %>
+        
+      <tr>
+        <td>
+        <% for(let c=0; c<filedetails[b][d].length; c++){  %>
+          <!-- , is the seperator for the column -->
+          <% if(filedetails[b][d].charAt(c)==','){ %>
+           </td>
+           <td>
+          <% } %>
+          <% if(filedetails[b][d].charAt(c)!=','){ %>
+             <%= filedetails[b][d].charAt(c) %>
+         <% } %>
+        <% } %>
+        </td>
+      </tr>
+      <% } %>
+      <% } %> 
+   <!-- <%= key %><br> -->
+  
+<% } %>
+</table>
+<% } %>
+
+
+

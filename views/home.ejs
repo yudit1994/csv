@@ -1,0 +1,26 @@
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="/css/style.css" >
+
+  <!--form for uploading the file-->
+  <form method="post" enctype="multipart/form-data" action="/upload">
+  <div>
+    <label for="inputTag">
+      Select CSV <br/>
+      <img src="/images/upload.png">
+      <input id="inputTag" type="file" name="uploaded_file" onchange="return fileValidation()"/>
+      <br/>
+      <span id="imageName"></span>
+    </label>
+    <input type="submit" value="upload" id="upload">
+  </div>
+  </form>
+
+
+  
+<br><br><br>
+<!--displaying of files in database-->
+<% for(var i of files){ %>
+    <a href='/open?name=<%= i.filename %>&page=1'><button class="w3-button w3-block w3-dark-grey"><%= i.filename %></button></a><br>
+<% } %>
+
+<script src="/js/script.js"></script>
