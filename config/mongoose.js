@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const db= mongoose.connection;
 
 
-mongoose.connect('mongodb://localhost:27017/csv');
+mongoose.connect(process.env.db_url);
 
 
 module.exports=db;
